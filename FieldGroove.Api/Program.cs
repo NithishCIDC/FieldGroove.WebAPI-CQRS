@@ -30,6 +30,8 @@ builder.Services.AddFluentValidationAutoValidation()
 
 builder.Services.AddCors(options => options.AddPolicy("policy", x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
+
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 #region JWT_AUTH
