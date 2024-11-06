@@ -16,4 +16,9 @@
     <ProjectReference Include="..\FieldGroove.Domain\FieldGroove.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS\Accounts\" />
+    <Folder Include="CQRS\Leads\" />
+  </ItemGroup>
+
 </Project>
