@@ -32,6 +32,8 @@ builder.Services.AddFluentValidationAutoValidation()
 
 builder.Services.AddCors(options => options.AddPolicy("policy", x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
+
+
 #region Auto mapper
 
 builder.Services.AddAutoMapper(typeof(Mapper));
