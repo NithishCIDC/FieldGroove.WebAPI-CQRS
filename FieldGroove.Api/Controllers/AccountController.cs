@@ -28,7 +28,7 @@ namespace FieldGroove.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Login([FromBody] IsRegisteredCommand entity)
+        public async Task<IActionResult> Login([FromBody] IsRegisteredQuery entity)
 		{
             if (ModelState.IsValid)
             {
@@ -37,7 +37,6 @@ namespace FieldGroove.Api.Controllers
                 if (isUser)
                 {
 					var JwtToken = new JwtToken(configuration);
-
 					var response = new
 					{
 						User = entity.Email!,
@@ -63,7 +62,7 @@ namespace FieldGroove.Api.Controllers
 		{
             if (ModelState.IsValid)
 			{
-                bool isUser = await sender.Send(new IsRegisteredCommand { Email = entity.Email,Password=entity.Password});
+                bool isUser = await sender.Send(new IsRegisteredQuery { Email = entity.Email,Password=entity.Password});
                 if (!isUser)
 				{
 					bool response =await sender.Send(entity);

@@ -11,6 +11,7 @@ using FieldGroove.Infrastructure.Repositories;
 using FieldGroove.Domain.Interfaces;
 using FieldGroove.Application.Mapper;
 using FieldGroove.Application.CQRS.Accounts.IsRegistered;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,8 +33,6 @@ builder.Services.AddFluentValidationAutoValidation()
 
 builder.Services.AddCors(options => options.AddPolicy("policy", x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
-
-
 #region Auto mapper
 
 builder.Services.AddAutoMapper(typeof(Mapper));
@@ -42,7 +41,7 @@ builder.Services.AddAutoMapper(typeof(Mapper));
 
 builder.Services.AddMediatR(configuration =>
 {
-    configuration.RegisterServicesFromAssembly(typeof(IsRegisteredCommandHandler).Assembly);
+    configuration.RegisterServicesFromAssembly(typeof(IsRegisteredQueryHandler).Assembly);
 });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -76,7 +75,36 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+#region Swagger
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+#endregion
 
 var app = builder.Build();
 

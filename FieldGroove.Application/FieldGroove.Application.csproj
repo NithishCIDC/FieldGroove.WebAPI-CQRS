@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Accounts\" />
     <Folder Include="CQRS\Leads\" />
   </ItemGroup>
 

@@ -14,7 +14,7 @@ namespace FieldGroove.Application.Mapper
     {
         public Mapper() 
         { 
-            CreateMap<IsRegisteredCommand, LoginModel>();
+            CreateMap<IsRegisteredQuery, LoginModel>();
             CreateMap<RegisterCommand, RegisterModel>();
         }
         

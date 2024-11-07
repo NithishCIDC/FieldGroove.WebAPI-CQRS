@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace FieldGroove.Application.CQRS.Accounts.IsRegistered
 {
-    public class IsRegisteredCommandHandler(IUnitOfWork unitOfWork,IMapper mapper) : IRequestHandler<IsRegisteredCommand, bool>
+    public class IsRegisteredQueryHandler(IUnitOfWork unitOfWork,IMapper mapper) : IRequestHandler<IsRegisteredQuery, bool>
     {
-        public async Task<bool> Handle(IsRegisteredCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(IsRegisteredQuery request, CancellationToken cancellationToken)
         {
             var entity = mapper.Map<LoginModel>(request);
             return await unitOfWork.UserRepository.IsRegistered(entity);

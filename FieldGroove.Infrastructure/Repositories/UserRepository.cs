@@ -26,7 +26,7 @@ namespace FieldGroove.Infrastructure.Repositories
         {
             try
             {
-                return await dbContext.UserData.AsQueryable().AnyAsync(x => x.Email == entity.Email!);
+                return await dbContext.UserData.AsQueryable().AnyAsync(x => x.Email == entity.Email! && x.Password==entity.Password);
             }
             catch (Exception ex)
             {

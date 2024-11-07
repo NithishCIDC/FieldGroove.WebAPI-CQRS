@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FieldGroove.Application.CQRS.Accounts.IsRegistered
 {
-    public class IsRegisteredCommand:IRequest<bool>
+    public class IsRegisteredQuery:IRequest<bool>
     {
         public string Email {  get; set; }=string.Empty;
         public string Password { get; set; } = string.Empty;
