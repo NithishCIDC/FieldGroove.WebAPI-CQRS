@@ -10,14 +10,13 @@ using System.Security.Cryptography;
 using FieldGroove.Infrastructure.Repositories;
 using FieldGroove.Domain.Interfaces;
 using FieldGroove.Application.Mapper;
-using FieldGroove.Application.CQRS.Accounts.IsRegistered;
 using Microsoft.OpenApi.Models;
 using FieldGroove.Domain.Models;
+using FieldGroove.Application.CQRS.Accounts.IsValid;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var jwt = new JwtModel();
 
 byte[] secretByte = new byte[64];
 using (var Random = RandomNumberGenerator.Create())
@@ -42,7 +41,7 @@ builder.Services.AddAutoMapper(typeof(Mapper));
 
 builder.Services.AddMediatR(configuration =>
 {
-    configuration.RegisterServicesFromAssembly(typeof(IsRegisteredQueryHandler).Assembly);
+    configuration.RegisterServicesFromAssembly(typeof(IsValidQueryHandler).Assembly);
 });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

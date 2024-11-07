@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FieldGroove.Application.CQRS.Accounts.IsRegistered
+namespace FieldGroove.Application.CQRS.Accounts.IsValid
 {
-    public class IsRegisteredQueryHandler(IUnitOfWork unitOfWork,IMapper mapper) : IRequestHandler<IsRegisteredQuery, bool>
+    public class IsValidQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<IsValidQuery, bool>
     {
-        public async Task<bool> Handle(IsRegisteredQuery request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(IsValidQuery request, CancellationToken cancellationToken)
         {
             var entity = mapper.Map<LoginModel>(request);
             return await unitOfWork.UserRepository.IsValid(entity);
