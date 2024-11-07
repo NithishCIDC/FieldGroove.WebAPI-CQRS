@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FieldGroove.Application\FieldGroove.Application.csproj" />
     <ProjectReference Include="..\FieldGroove.Domain\FieldGroove.Domain.csproj" />
   </ItemGroup>
 

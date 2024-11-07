@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.2.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
   </ItemGroup>
@@ -17,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Accounts\" />
     <Folder Include="CQRS\Leads\" />
   </ItemGroup>
 

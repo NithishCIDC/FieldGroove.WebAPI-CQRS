@@ -1,8 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MediatR;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FieldGroove.Domain.Models
+namespace FieldGroove.Application.CQRS.Accounts.Register
 {
-    public class RegisterModel
+    public class RegisterCommand : IRequest<bool>
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }

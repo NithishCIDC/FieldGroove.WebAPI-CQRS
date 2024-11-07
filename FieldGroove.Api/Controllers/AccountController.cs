@@ -2,6 +2,9 @@
 using FieldGroove.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using FieldGroove.Domain.Interfaces;
+using MediatR;
+using FieldGroove.Application.CQRS.Accounts.IsRegistered;
+using FieldGroove.Application.CQRS.Accounts.Register;
 
 namespace FieldGroove.Api.Controllers
 {
@@ -11,10 +14,12 @@ namespace FieldGroove.Api.Controllers
 	{
 		private readonly IConfiguration configuration;
 		private readonly IUnitOfWork unitOfWork;
-		public AccountController(IConfiguration configuration, IUnitOfWork unitOfWork)
+		private readonly ISender sender;
+		public AccountController(IConfiguration configuration, IUnitOfWork unitOfWork,ISender sender)
 		{
 			this.configuration = configuration;
 			this.unitOfWork = unitOfWork;
+			this.sender = sender;
 		}
 
 		// Login Action in Api Controller
@@ -23,11 +28,12 @@ namespace FieldGroove.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Login([FromBody] LoginModel entity)
+        public async Task<IActionResult> Login([FromBody] IsRegisteredCommand entity)
 		{
             if (ModelState.IsValid)
             {
-				var isUser = await unitOfWork.UserRepository.IsValid(entity);
+				//var isUser = await unitOfWork.UserRepository.IsRegistered(entity);
+				bool isUser = await sender.Send(entity);
                 if (isUser)
                 {
 					var JwtToken = new JwtToken(configuration);
@@ -53,14 +59,14 @@ namespace FieldGroove.Api.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		[ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> Register([FromBody] RegisterModel entity)
+        public async Task<IActionResult> Register([FromBody] RegisterCommand entity)
 		{
             if (ModelState.IsValid)
 			{
-				var isUser = await unitOfWork.UserRepository.IsRegistered(entity);
+                bool isUser = await sender.Send(new IsRegisteredCommand { Email = entity.Email,Password=entity.Password});
                 if (!isUser)
 				{
-					bool response =await unitOfWork.UserRepository.Create(entity);
+					bool response =await sender.Send(entity);
 					return response? Ok(): StatusCode(500, "An internal server error occurred.");
 				}
 				return Conflict(new { error = "User already registered" });

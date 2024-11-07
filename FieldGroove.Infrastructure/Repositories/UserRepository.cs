@@ -15,14 +15,14 @@ namespace FieldGroove.Infrastructure.Repositories
                 await dbContext.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex) 
-            { 
-               return false;
+            catch (Exception ex)
+            {
+                return false;
             }
-            
+
         }
 
-        public async Task<bool> IsRegistered(RegisterModel entity)
+        public async Task<bool> IsRegistered(LoginModel entity)
         {
             try
             {
@@ -32,20 +32,7 @@ namespace FieldGroove.Infrastructure.Repositories
             {
                 return false;
             }
-            
-        }
 
-        public async Task<bool> IsValid(LoginModel entity)
-        {
-            try
-            {
-                return await dbContext.UserData.AsQueryable().AnyAsync(x => x.Email == entity.Email!);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-           
         }
     }
 }

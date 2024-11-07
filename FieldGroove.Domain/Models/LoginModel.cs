@@ -11,7 +11,6 @@ namespace FieldGroove.Domain.Models
         public string? Password { get; set; }
 
         [Required]
-        [Display(Name = "Remember Me")]
         public bool RemenberMe { get; set; }
     }
 }

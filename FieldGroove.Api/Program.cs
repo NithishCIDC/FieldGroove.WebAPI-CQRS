@@ -2,13 +2,15 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using FieldGroove.Domain.Interfaces;
 using FieldGroove.Application.validation;
 using FieldGroove.Infrastructure.Data;
-using FieldGroove.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using FieldGroove.Infrastructure.Repositories;
+using FieldGroove.Domain.Interfaces;
+using FieldGroove.Application.Mapper;
+using FieldGroove.Application.CQRS.Accounts.IsRegistered;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,17 @@ builder.Services.AddFluentValidationAutoValidation()
     .AddValidatorsFromAssemblyContaining<RegisterValidator>();
 
 builder.Services.AddCors(options => options.AddPolicy("policy", x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
+#region Auto mapper
+
+builder.Services.AddAutoMapper(typeof(Mapper));
+
+#endregion
+
+builder.Services.AddMediatR(configuration =>
+{
+    configuration.RegisterServicesFromAssembly(typeof(IsRegisteredCommandHandler).Assembly);
+});
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
