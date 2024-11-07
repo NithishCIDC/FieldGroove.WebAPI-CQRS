@@ -7,8 +7,8 @@ namespace FieldGroove.Domain.Interfaces
         Task<List<LeadsModel>> GetAll();
         Task<LeadsModel> GetById(int id);
         Task<bool> Create(LeadsModel leads);
-        Task Update(LeadsModel leads);
-        Task Delete(LeadsModel leads);
-        Task<bool> isAny(int id);
+        Task<bool> Update(LeadsModel leads);
+        Task<bool> Delete(LeadsModel leads);
+        Task<bool> IsAny(int id);
     }
 }

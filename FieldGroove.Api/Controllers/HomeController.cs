@@ -1,108 +1,84 @@
-﻿using FieldGroove.Domain.Models;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using FieldGroove.Domain.Interfaces;
+using FieldGroove.Application.CQRS.Leads.CreateLead;
+using FieldGroove.Application.CQRS.Leads.DeleteLead;
+using FieldGroove.Application.CQRS.Leads.UpdateLead;
+using FieldGroove.Application.CQRS.Leads.GetByIdLead;
+using FieldGroove.Application.CQRS.Leads.GetAllLeads;
 
 namespace FieldGroove.Api.Controllers
 {
     [Authorize]
-	[Route("api/[controller]")]
-	[ApiController]
-	public class HomeController(IUnitOfWork unitOfWork) : ControllerBase
-	{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HomeController(ISender sender) : ControllerBase
+    {
 
-		//Leads Action in Api Controller
+        //Leads Action in Api Controller
 
-		[HttpGet("Leads")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> Leads()
-		{
-			var User = await unitOfWork.LeadsRepository.GetAll();
-            var response = new 
+        [HttpGet("Leads")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Leads()
+        {
+            var query = new GetAllLeadsQuery();
+            var result = await sender.Send(query);
+            var response = new
             {
-                Data = User,
-                TotalCount = User.Count,
+                Data = result,
+                TotalCount = result.Count,
                 Status = "success",
                 Timestamp = DateTime.UtcNow.ToString("o")
             };
             return Ok(response);
-		}
+        }
 
-		[HttpGet("Leads/{id:int}")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<IActionResult> Leads(int id)
-		{
-			var User = await unitOfWork.LeadsRepository.GetById(id);
-            return Ok(User);
-		}
+        [HttpGet("Leads/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Leads(int id)
+        {
+            var query = new GetByIdLeadQuery(id);
+            var User = await sender.Send(query);
+            return User is not null? Ok(User):NotFound();
+        }
 
-		//CreateLead Action in Api Controller
+        //CreateLead Action in Api Controller
 
-		[HttpPost("CreateLead")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> CreateLead([FromBody] LeadsModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				bool response = await unitOfWork.LeadsRepository.Create(model);
-				if (response) return Ok();
-			}
-			return BadRequest();
-		}
+        [HttpPost("CreateLead")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateLead([FromBody] CreateLeadCommand model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool response = await sender.Send(model);
+                if (response) return Ok();
+            }
+            return BadRequest();
+        }
 
-		//EditLead Action in Api Controller
+        //EditLead Action in Api Controller
 
-		[HttpPut("EditLead")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> EditLead([FromBody] LeadsModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				if (await unitOfWork.LeadsRepository.isAny((int)model.Id!))
-				{
-                    await unitOfWork.LeadsRepository.Update(model);
-					return Ok(model);
-				}
-				return NotFound();
-			}
-			return BadRequest();
-		}
+        [HttpPut("EditLead")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> EditLead([FromBody] UpdateLeadCommand model)
+        {
+            if (ModelState.IsValid)
+            {
+                return await sender.Send(model) ? Ok() : NotFound();
+            }
+            return BadRequest();
+        }
 
-		// Delete Action in Api Controller 
+        // Delete Action in Api Controller 
 
-		[HttpDelete("DeleteLead/{id:int}")]
-		public async Task<IActionResult> DeleteLead(int id)
-		{
-			var response = await unitOfWork.LeadsRepository.GetById(id);
-			if (response is not null)
-			{
-				await unitOfWork.LeadsRepository.Delete(response);
-				return Ok(response);
-			}
-			return NotFound();
-		}
-
-		// Download the CSV file 
-
-		[HttpGet("download-csv")]
-		public async Task<IActionResult> DownloadCsv()
-		{
-			var records = await unitOfWork.LeadsRepository.GetAll();
-
-			var csv = new StringBuilder();
-			csv.AppendLine("ID,Project Name,Status,Added,Type,Contact,Action,Assignee,Bid Date");
-
-			foreach (var record in records)
-			{
-				csv.AppendLine($"{record.Id},{record.ProjectName},{record.Status},{record.Added},{record.Type},{record.Contact},{record.Action},{record.Assignee},{record.BidDate}");
-			}
-
-			byte[] buffer = Encoding.UTF8.GetBytes(csv.ToString());
-			return File(buffer, "text/csv", "LeadsData.csv");
-		}
-	}
+        [HttpDelete("DeleteLead/{id:int}")]
+        public async Task<IActionResult> DeleteLead(int id)
+        {
+            var query = new DeleteLeadCommand(id);
+            return await sender.Send(query) ? Ok() : NotFound();
+        }
+    }
 }

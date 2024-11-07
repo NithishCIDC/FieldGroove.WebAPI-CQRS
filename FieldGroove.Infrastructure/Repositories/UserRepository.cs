@@ -2,6 +2,9 @@
 using FieldGroove.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using FieldGroove.Domain.Interfaces;
+using Azure.Core;
+using System.Dynamic;
+using FieldGroove.Application.JwtAuthtoken;
 
 namespace FieldGroove.Infrastructure.Repositories
 {
@@ -22,17 +25,31 @@ namespace FieldGroove.Infrastructure.Repositories
 
         }
 
-        public async Task<bool> IsRegistered(LoginModel entity)
+        public async Task<object> IsRegistered(LoginModel entity)
         {
-            try
+            bool isUser = await dbContext.UserData.AnyAsync(x => x.Email == entity.Email!);
+            if (isUser)
             {
-                return await dbContext.UserData.AsQueryable().AnyAsync(x => x.Email == entity.Email! && x.Password==entity.Password);
+                if (await dbContext.UserData.AnyAsync(x => x.Password == entity.Password!))
+                {
+                    var JwtToken = new JwtToken();
+                    var token = new
+                    {
+                        User = entity.Email,
+                        Token = JwtToken.GenerateJwtToken(entity.Email!),
+                        Status = "OK",
+                        Timestamp = DateTime.Now
+                    };
+                    return token;
+                }
+                return new { error = "Invalid Credential" };
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return new { error="Invalid User"};
+        }
 
+        public async Task<bool> IsValid(LoginModel entity)
+        {
+            return await dbContext.UserData.AnyAsync(x => x.Email == entity.Email!);
         }
     }
 }

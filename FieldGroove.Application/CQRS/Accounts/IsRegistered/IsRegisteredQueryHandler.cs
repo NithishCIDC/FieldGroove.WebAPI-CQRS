@@ -15,7 +15,7 @@ namespace FieldGroove.Application.CQRS.Accounts.IsRegistered
         public async Task<bool> Handle(IsRegisteredQuery request, CancellationToken cancellationToken)
         {
             var entity = mapper.Map<LoginModel>(request);
-            return await unitOfWork.UserRepository.IsRegistered(entity);
+            return await unitOfWork.UserRepository.IsValid(entity);
         }
     }
 }

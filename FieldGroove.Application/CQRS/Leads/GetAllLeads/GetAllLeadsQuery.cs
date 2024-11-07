@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FieldGroove.Application.CQRS.Leads.CreateLead
+namespace FieldGroove.Application.CQRS.Leads.GetAllLeads
 {
-    public record GetAllLeadQuery : IRequest<IEnumerable<LeadsModel>>;
+    public class GetAllLeadsQuery : IRequest<List<LeadsModel>>;
 }

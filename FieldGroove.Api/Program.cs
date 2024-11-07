@@ -12,20 +12,21 @@ using FieldGroove.Domain.Interfaces;
 using FieldGroove.Application.Mapper;
 using FieldGroove.Application.CQRS.Accounts.IsRegistered;
 using Microsoft.OpenApi.Models;
+using FieldGroove.Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var jwt = new JwtModel();
 
 byte[] secretByte = new byte[64];
 using (var Random = RandomNumberGenerator.Create())
 {
     Random.GetBytes(secretByte);
 }
-
 string secretKey = Convert.ToBase64String(secretByte);
+JwtModel.Key = secretKey;
 
-builder.Configuration["Jwt:Key"] = secretKey;
 
 builder.Services.AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
@@ -61,9 +62,9 @@ builder.Services.AddAuthentication(options =>
            ValidateAudience = true,
            ValidateLifetime = true,
            ValidateIssuerSigningKey = true,
-           ValidIssuer = builder.Configuration["Jwt:Issuer"],
-           ValidAudience = builder.Configuration["Jwt:Audience"],
-           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+           ValidIssuer = JwtModel.Issuer,
+           ValidAudience = JwtModel.Audience,
+           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtModel.Key))
        };
    });
 

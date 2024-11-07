@@ -21,10 +21,18 @@ namespace FieldGroove.Infrastructure.Repositories
             }
         }
 
-        public async Task Delete(LeadsModel lead)
+        public async Task<bool> Delete(LeadsModel lead)
         {
-            dbContext.Leads.Remove(lead);
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                dbContext.Leads.Remove(lead);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) {
+                return false;
+            }
+            
         }
 
         public async Task<List<LeadsModel>> GetAll()
@@ -38,15 +46,24 @@ namespace FieldGroove.Infrastructure.Repositories
             return response!;
         }
 
-        public async Task<bool> isAny(int id)
+        public async Task<bool> IsAny(int id)
         {
             return await dbContext.Leads.AnyAsync(x => x.Id == id);
         }
 
-        public async Task Update(LeadsModel leads)
+        public async Task<bool> Update(LeadsModel leads)
         {
-            dbContext.Leads.Update(leads);
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                dbContext.Leads.Update(leads);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
     }
 }

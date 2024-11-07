@@ -5,7 +5,7 @@ namespace FieldGroove.Domain.Interfaces
     public interface IUserRepository
     {
         Task<bool> Create(RegisterModel entity);
-        Task<bool> IsRegistered(LoginModel enitity);
-
+        Task<object> IsRegistered(LoginModel enitity);
+        Task<bool> IsValid(LoginModel enitity);
     }
 }
