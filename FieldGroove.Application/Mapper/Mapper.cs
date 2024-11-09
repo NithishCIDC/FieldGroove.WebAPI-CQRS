@@ -25,10 +25,10 @@ namespace FieldGroove.Application.Mapper
             //LeadController
             CreateMap<CreateLeadCommand,LeadsModel>();
             //CreateMap<CreateLeadCommand, LeadsModel>()
-            //   .ForMember(dest => dest.Pr, opt => opt.MapFrom(src => src.Project))
-            //.ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.ContactNumber));
+            //   .ForMember(dest => dest.ProjectName, opt => opt.MapFrom(src => src.Project))
+            //   .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.ContactNumber));
             CreateMap<UpdateLeadCommand, LeadsModel>();
         }
-        
+
     }
 }
