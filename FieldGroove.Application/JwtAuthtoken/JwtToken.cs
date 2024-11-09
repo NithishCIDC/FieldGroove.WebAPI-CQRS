@@ -8,7 +8,7 @@ namespace FieldGroove.Application.JwtAuthtoken
 {
     public class JwtToken()
     {
-        public string GenerateJwtToken(string username)
+        public static string GenerateJwtToken(string username)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(JwtModel.Key);
