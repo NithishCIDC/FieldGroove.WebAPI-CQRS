@@ -32,7 +32,6 @@ namespace FieldGroove.Infrastructure.Repositories
             {
                 if (await dbContext.UserData.AnyAsync(x => x.Password == entity.Password!))
                 {
-                    var JwtToken = new JwtToken();
                     var token = new
                     {
                         User = entity.Email,
