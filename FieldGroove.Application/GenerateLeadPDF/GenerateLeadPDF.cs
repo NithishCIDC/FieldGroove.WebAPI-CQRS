@@ -61,7 +61,7 @@ namespace FieldGroove.Application.GenerateLeadPDF
             AddRow("ProjectName", model.ProjectName!);
             AddRow("Status", model.Status!);
             AddRow("Added", model.Added.ToString()!);
-            AddRow("Type",model.Type.ToString());
+            AddRow("Type",model.Type?"Bussiness":"Personal");
             AddRow("Contact", model.Contact.ToString());
             AddRow("Action",model.Action!);
             AddRow("Assignee", model.Assignee!);
