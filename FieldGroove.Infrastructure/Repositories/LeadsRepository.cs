@@ -13,10 +13,9 @@ namespace FieldGroove.Infrastructure.Repositories
         {
             try
             {
+                GenerateLeadPDF.LeadPDF(leads);
                 await dbContext.Leads.AddAsync(leads);
                 await dbContext.SaveChangesAsync();
-                var pdf = GenerateLeadPDF.LeadPDF(leads);
-                EmailSender.EmailSendAsync(pdf);
                 return true;
             }
             catch (Exception ex)
