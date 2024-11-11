@@ -19,4 +19,8 @@
     <ProjectReference Include="..\FieldGroove.Domain\FieldGroove.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GenerateLeadPDF\" />
+  </ItemGroup>
+
 </Project>

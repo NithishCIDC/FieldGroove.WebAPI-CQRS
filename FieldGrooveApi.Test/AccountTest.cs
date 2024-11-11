@@ -11,7 +11,7 @@ namespace FieldGrooveApi.Test
     public class AccountTest
     {
         private readonly RegisterValidator _RegisterValidator;
-        private readonly LoginValidator _LoginValidator;
+        private readonly LoginValidator _LoginValidator;                       
         private readonly Mock<IConfiguration> configuration;
         private readonly Mock<IUnitOfWork> unitOfWork;
         private readonly List<RegisterModel> registeredUsers;
