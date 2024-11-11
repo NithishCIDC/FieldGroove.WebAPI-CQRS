@@ -2,6 +2,7 @@
 using FieldGroove.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using FieldGroove.Domain.Interfaces;
+using FieldGroove.Application.GenerateLeadPDF;
 
 namespace FieldGroove.Infrastructure.Repositories
 {
@@ -13,6 +14,7 @@ namespace FieldGroove.Infrastructure.Repositories
             {
                 await dbContext.Leads.AddAsync(leads);
                 await dbContext.SaveChangesAsync();
+                GenerateLeadPDF.LeadPDF(leads);
                 return true;
             }
             catch (Exception ex)
