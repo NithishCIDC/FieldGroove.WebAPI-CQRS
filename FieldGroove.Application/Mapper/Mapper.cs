@@ -26,6 +26,6 @@ namespace FieldGroove.Application.Mapper
             CreateMap<CreateLeadCommand, LeadsModel>();
             CreateMap<UpdateLeadCommand, LeadsModel>();
         }
-        
+
     }
 }
