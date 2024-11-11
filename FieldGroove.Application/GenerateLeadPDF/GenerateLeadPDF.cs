@@ -16,6 +16,9 @@ namespace FieldGroove.Application.GenerateLeadPDF
             var document = new Document(PageSize.A4, marginLeft, marginRight, 30, 30);
             PdfWriter writer = PdfWriter.GetInstance(document, Lead);
 
+            writer.ViewerPreferences = PdfWriter.PageModeUseNone | PdfWriter.FitWindow | PdfWriter.CenterWindow| PdfWriter.DisplayDocTitle;
+         
+
             document.Open();
 
             PdfContentByte cb = writer.DirectContent;
@@ -38,6 +41,8 @@ namespace FieldGroove.Application.GenerateLeadPDF
                 SpacingAfter = 20f,
             };
             table.SetWidths(new float[] { 1f, 3f });
+            table.SplitLate = false;
+            table.SplitRows = false;
 
             void AddRow(string label, string value)
             {
@@ -73,6 +78,7 @@ namespace FieldGroove.Application.GenerateLeadPDF
                 Alignment = Element.ALIGN_CENTER,
                 SpacingBefore = 20f
             });
+            writer.SetOpenAction(PdfAction.GotoLocalPage(1, new PdfDestination(PdfDestination.XYZ, 0, PageSize.A4.Height, 0.79f), writer));
 
             document.Close();
 
@@ -80,3 +86,4 @@ namespace FieldGroove.Application.GenerateLeadPDF
         }
     }
 }
+ 
