@@ -2,7 +2,6 @@
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
-using iTextSharp.text.pdf.parser;
 
 namespace FieldGroove.Application.GenerateLeadPDF
 {
@@ -12,10 +11,18 @@ namespace FieldGroove.Application.GenerateLeadPDF
         public static byte[] LeadPDF(LeadsModel model)
         {
             using var Lead = new MemoryStream();
-            var document = new Document(PageSize.A4, 25, 25, 30, 30);
-            PdfWriter.GetInstance(document, Lead);
+            float marginLeft = 35f;
+            float marginRight = 35f; 
+            var document = new Document(PageSize.A4, marginLeft, marginRight, 30, 30);
+            PdfWriter writer = PdfWriter.GetInstance(document, Lead);
 
             document.Open();
+
+            PdfContentByte cb = writer.DirectContent;
+            cb.SetLineWidth(1f);
+            cb.Rectangle(25, 25, PageSize.A4.Width - 50, PageSize.A4.Height - 50);
+            cb.Stroke();
+          
 
             var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD,20,BaseColor.BLACK); 
             var subTitleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLDOBLIQUE,17,BaseColor.DARK_GRAY);
@@ -36,23 +43,20 @@ namespace FieldGroove.Application.GenerateLeadPDF
             {
                 var cellLabel = new PdfPCell(new Phrase(label))
                 {
-                    //Border = Rectangle.,
                     PaddingBottom = 5f,
                     BackgroundColor = new BaseColor(240, 240, 240)
                 };
                 var cellValue = new PdfPCell(new Phrase(value))
                 {
-                    //Border = Rectangle.NO_BORDER,
                     PaddingBottom = 5f,
-                    //BackgroundColor = new BaseColor(240, 240, 240)
                 };
                 table.AddCell(cellLabel);
                 table.AddCell(cellValue);
             }
 
-            AddRow("ID:", model.Id.ToString()!);
-            AddRow("ProjectName:", model.ProjectName!);
-            AddRow("Status:", model.Status!);
+            AddRow("ID", model.Id.ToString()!);
+            AddRow("ProjectName", model.ProjectName!);
+            AddRow("Status", model.Status!);
             AddRow("Added", model.Added.ToString()!);
             AddRow("Type",model.Type.ToString());
             AddRow("Contact", model.Contact.ToString());
