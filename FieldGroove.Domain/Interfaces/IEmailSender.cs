@@ -8,6 +8,6 @@ namespace FieldGroove.Domain.Interfaces
 {
     public interface IEmailSender
     {
-       void EmailSendAsync(string email, string subject, string message);
+       void EmailSendAsync(string email, string subject, string message,byte[] pdf);
     }
 }
