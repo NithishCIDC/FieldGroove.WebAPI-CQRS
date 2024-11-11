@@ -14,7 +14,6 @@ namespace FieldGroove.Application.GenerateLeadPDF
             using var Lead = new MemoryStream();
             var document = new Document(PageSize.A4, 25, 25, 30, 30);
             PdfWriter.GetInstance(document, Lead);
-            document.Open();
 
             var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD,20,BaseColor.BLACK); 
             var subTitleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLDOBLIQUE,17,BaseColor.DARK_GRAY);
@@ -75,7 +74,6 @@ namespace FieldGroove.Application.GenerateLeadPDF
                 SpacingBefore = 20f
             });
 
-            document.Close();
             return Lead.ToArray();
         }
     }
