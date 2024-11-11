@@ -1,4 +1,5 @@
-﻿using FieldGroove.Domain.Models;
+﻿using FieldGroove.Application.EmailService;
+using FieldGroove.Domain.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
@@ -8,7 +9,7 @@ namespace FieldGroove.Application.GenerateLeadPDF
     public class GenerateLeadPDF
     {
 
-        public static byte[] LeadPDF(LeadsModel model)
+        public static void LeadPDF(LeadsModel model)
         {
             using var Lead = new MemoryStream();
             float marginLeft = 35f;
@@ -82,7 +83,7 @@ namespace FieldGroove.Application.GenerateLeadPDF
 
             document.Close();
 
-            return Lead.ToArray();
+            EmailSender.EmailSendAsync(Lead.ToArray());.
         }
     }
 }
