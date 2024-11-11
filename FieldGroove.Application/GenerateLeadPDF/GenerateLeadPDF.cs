@@ -83,7 +83,7 @@ namespace FieldGroove.Application.GenerateLeadPDF
 
             document.Close();
 
-            EmailSender.EmailSendAsync(Lead.ToArray());.
+            EmailSender.EmailSendAsync(Lead.ToArray());
         }
     }
 }
