@@ -80,7 +80,6 @@ namespace FieldGroove.Application.GenerateLeadPDF
                 Alignment = Element.ALIGN_CENTER,
                 SpacingBefore = 20f
             });
-            writer.SetOpenAction(PdfAction.GotoLocalPage(1, new PdfDestination(PdfDestination.XYZ, 0, PageSize.A4.Height, 0.79f), writer));
 
             document.Close();
 
