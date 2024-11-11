@@ -17,10 +17,9 @@ namespace FieldGroove.Application.GenerateLeadPDF
             var document = new Document(PageSize.A4, marginLeft, marginRight, 30, 30);
             PdfWriter writer = PdfWriter.GetInstance(document, Lead);
 
-            writer.ViewerPreferences = PdfWriter.PageLayoutOneColumn |
-                                      PdfWriter.PageModeUseNone |      // No extra panels on open
-                                      PdfWriter.FitWindow |            // Fit page to window
-                                      PdfWriter.DisplayDocTitle;
+            writer.ViewerPreferences = PdfWriter.FitWindow |
+                                    PdfWriter.PageLayoutOneColumn |
+                                    PdfWriter.DisplayDocTitle;
 
             document.Open();
 
@@ -81,8 +80,6 @@ namespace FieldGroove.Application.GenerateLeadPDF
                 Alignment = Element.ALIGN_CENTER,
                 SpacingBefore = 20f
             });
-            PdfAction zoomToFitPage = PdfAction.JavaScript("this.zoomType = zoomtype.fitP;", writer);
-            writer.AddJavaScript(zoomToFitPage);
 
             document.Close();
 
