@@ -6,10 +6,10 @@ using iTextSharp.text.pdf;
 
 namespace FieldGroove.Application.GenerateLeadPDF
 {
-    public class GenerateLeadPDF(IEmailSender emailSender)
+    public class GenerateLeadPDF
     {
 
-        public static void LeadPDF(LeadsModel model)
+        public static byte[] LeadPDF(LeadsModel model)
         {
             using var Lead = new MemoryStream();
             var document = new Document();
@@ -28,7 +28,7 @@ namespace FieldGroove.Application.GenerateLeadPDF
             document.Add(new Paragraph($"BidDate: {model.BidDate}"));
 
             document.Close();
-            emailSender.EmailSendAsync();
+            return Lead.ToArray();
         }
     }
 }

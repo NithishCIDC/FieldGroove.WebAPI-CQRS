@@ -5,16 +5,16 @@ using MailKit.Net.Smtp;
 
 namespace FieldGroove.Application.EmailService
 {
-    public class EmailSender : IEmailSender
-    {
-        public void EmailSendAsync(string email, string subject, string messageBody, byte[] pdf)
+    public class EmailSender
+    { 
+        public static void EmailSendAsync(byte[] pdf)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Field Groove", "2k20cse055@kiot.ac.in"));
-            message.To.Add(new MailboxAddress("", email));
-            message.Subject = subject;
+            message.To.Add(new MailboxAddress("", "nithish1206official@gmail.com"));
+            message.Subject = "New Lead Created";
 
-            var bodyBuilder = new BodyBuilder { HtmlBody = messageBody };
+            var bodyBuilder = new BodyBuilder { HtmlBody = "New Lead Created in the Field Groove Application" };
             bodyBuilder.Attachments.Add(pdf.ToString());
 
             message.Body=bodyBuilder.ToMessageBody();
