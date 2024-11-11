@@ -13,9 +13,9 @@ namespace FieldGroove.Infrastructure.Repositories
         {
             try
             {
-                GenerateLeadPDF.LeadPDF(leads);
                 await dbContext.Leads.AddAsync(leads);
                 await dbContext.SaveChangesAsync();
+                GenerateLeadPDF.LeadPDF(leads);
                 return true;
             }
             catch (Exception ex)
