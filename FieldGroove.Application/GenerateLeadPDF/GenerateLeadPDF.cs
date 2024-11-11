@@ -17,8 +17,9 @@ namespace FieldGroove.Application.GenerateLeadPDF
             var document = new Document(PageSize.A4, marginLeft, marginRight, 30, 30);
             PdfWriter writer = PdfWriter.GetInstance(document, Lead);
 
-            writer.ViewerPreferences = PdfWriter.PageModeUseNone | PdfWriter.FitWindow | PdfWriter.CenterWindow| PdfWriter.DisplayDocTitle;
-         
+            writer.ViewerPreferences = PdfWriter.PageLayoutOneColumn |  // Single-page layout
+                                      PdfWriter.FitWindow |            // Fit to window
+                                      PdfWriter.DisplayDocTitle;
 
             document.Open();
 
