@@ -14,8 +14,8 @@ namespace FieldGroove.Application.GenerateLeadPDF
             using var Lead = new MemoryStream();
             using var document = new Document();
             PdfWriter.GetInstance(document, Lead);
-            document.Open();
 
+            document.Open();
             document.Add(new Paragraph("Lead Details"));
             document.Add(new Paragraph($"Id: {model.Id}"));
             document.Add(new Paragraph($"ProjectName: {model.ProjectName}"));
@@ -26,8 +26,8 @@ namespace FieldGroove.Application.GenerateLeadPDF
             document.Add(new Paragraph($"Action: {model.Action}"));
             document.Add(new Paragraph($"Assignee: {model.Assignee}"));
             document.Add(new Paragraph($"BidDate: {model.BidDate}"));
-
             document.Close();
+
             return Lead.ToArray();
         }
     }
