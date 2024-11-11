@@ -12,7 +12,7 @@ namespace FieldGroove.Application.GenerateLeadPDF
         public static byte[] LeadPDF(LeadsModel model)
         {
             using var Lead = new MemoryStream();
-            var document = new Document();
+            using var document = new Document();
             PdfWriter.GetInstance(document, Lead);
             document.Open();
 

@@ -15,7 +15,7 @@ namespace FieldGroove.Application.EmailService
             message.Subject = "New Lead Created";
 
             var bodyBuilder = new BodyBuilder { HtmlBody = "New Lead Created in the Field Groove Application" };
-            bodyBuilder.Attachments.Add(pdf.ToString());
+            bodyBuilder.Attachments.Add("LeadDetails.pdf", pdf, ContentType.Parse("application/pdf"));
 
             message.Body=bodyBuilder.ToMessageBody();
 
