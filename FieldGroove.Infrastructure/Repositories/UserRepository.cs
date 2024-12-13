@@ -8,7 +8,7 @@ using FieldGroove.Application.JwtAuthtoken;
 
 namespace FieldGroove.Infrastructure.Repositories
 {
-    public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
+    public class UserRepository(ApplicationDbContext dbContext,IGenerateJwtToken GenerateToken) : IUserRepository
     {
         public async Task<bool> Create(RegisterModel entity)
         {
@@ -35,7 +35,7 @@ namespace FieldGroove.Infrastructure.Repositories
                     var token = new
                     {
                         User = entity.Email,
-                        Token = JwtToken.GenerateJwtToken(entity.Email!),
+                        Token = GenerateToken.JwtToken(entity.Email!),
                         Status = "OK",
                         Timestamp = DateTime.Now
                     };
